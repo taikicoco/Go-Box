@@ -1,6 +1,32 @@
 package main
 import "fmt"
 
-func main(){
-	fmt.Println("Hello World")
+//Data is interface
+type Data interface {
+	Initial(name string, data []int)
+	PrintData()
+}
+
+//Mydata is Struct
+type Mydata struct {
+	Name string
+	Data []int
+}
+
+//Initial is init method
+func (md *Mydata) Initial(name string, data []int) {
+	md.Name = name
+	md.Data = data
+}
+
+//PfintData is printIn all data
+func (md *Mydata) PrintData() {
+	fmt.Println("Name:", md.Name)
+	fmt.Println("Data:", md.Data)
+}
+
+func main () {
+	var ob Mydata = Mydata{}
+	ob.Initial("Taiki", []int{11,22,33})
+	ob.PrintData()
 }
