@@ -1,3 +1,3 @@
-module Go-Box
+module go
 
 go 1.18
