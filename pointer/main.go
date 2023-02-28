@@ -24,7 +24,7 @@ func f2() {
 
 	var y *int
 	fmt.Println(y == nil) // true
-	fmt.Println(*y) // パニックになる
+	// fmt.Println(*y) // パニックになる
 }
 
 // 値渡しと参照渡し
