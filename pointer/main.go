@@ -4,16 +4,16 @@ import (
 	"fmt"
 )
 
-func main() {
+func f1() {
 	var x int32 = 10
 	var y bool = true
 	pointerX := &x
 	pointerY := &y
 	var pointerZ *string
+	fmt.Println(pointerX, pointerY, pointerZ)
+}
 
-	x := "hello"
-	pointerToX := &x // ポインタ型
-
+func f2() {
 	// 「*」は間接参照
 	// ポインタ型変数の前に付けると、そのポインタが参照するアドレスに保存されている値を返す
 	// これをデリファレンスと呼ぶ
@@ -25,26 +25,28 @@ func main() {
 	var y *int
 	fmt.Println(y == nil) // true
 	fmt.Println(*y) // パニックになる
-
 }
 
-
-
 // 値渡しと参照渡し
+func failedUpdate(px *int) {
+	x2 := 20
+	px = &x2
+}
 
-// func failedUpdate(px *int) {
-// 	x2 := 20
-// 	px = &x2
-// }
+func update(px *int) {
+	*px = 20
+}
 
-// func update(px *int) {
-// 	*px = 20
-// }
+func f3() {
+	x := 10
+	failedUpdate(&x)
+	fmt.Println(x) // 10
+	update(&x)
+	fmt.Println(x) // 20
+}
 
-// func main() {
-// 	x := 10
-// 	failedUpdate(&x)
-// 	fmt.Println(x) // 10
-// 	update(&x)
-// 	fmt.Println(x) // 20
-// }
+func main() {
+	f1()
+	f2()
+	f3()
+}
