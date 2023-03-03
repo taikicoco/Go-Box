@@ -1,13 +1,14 @@
 package main
 
-import(
+import (
 	"fmt"
+	"log"
 	"net/http"
-	"time"
+	"net/http/httputil"
 )
 
 /*
-http.Serverの定義
+http.Server
 	type Server struct {
 		Addr string
 		Handler Handler // ←ここにインタフェースhttp.Handlerを満たすHandlerを代入する
@@ -23,34 +24,22 @@ http.Serverの定義
 		BaseContext func(net.Listener) context.Context
 		ConnContext func(ctx context.Context, c net.Conn) context.Context
 	}
-	
-	type Handler interface {
-		ServeHTTP(ResponseWriter, *Request)
-	}
 */
 
-type HelloHandler struct{} 
-
-func (hh HelloHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello!\n"))
-} 
-
-func main() {
-	s := http.Server{ //liststart2
-		Addr:         ":8080",
-		ReadTimeout:  30 * time.Second,
-		WriteTimeout: 90 * time.Second,
-		IdleTimeout:  120 * time.Second,
-		Handler:      HelloHandler{},
-	}
-	fmt.Println("Open http://localhost:8080/")
-	err := s.ListenAndServe()
+func hander(w http.ResponseWriter, r *http.Request) {
+	dump, err := httputil.DumpRequest(r, true)
 	if err != nil {
-		if err != http.ErrServerClosed {
-			panic(err)
-		}
-	} 
+		http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+		return
+	}
+	fmt.Println(string(dump))
+	fmt.Fprintf(w, "<html><body>hello</body></html>\n")
 }
 
-
-	
+func main() {
+	var httpServer http.Server
+	http.HandleFunc("/", hander)
+	log.Println("start http listening :18888")
+	httpServer.Addr = ":18888"
+	log.Println(httpServer.ListenAndServe())
+}
