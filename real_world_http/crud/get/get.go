@@ -1,4 +1,4 @@
-package real_world_http
+package main
 
 import(
 	"io/ioutil"
@@ -6,6 +6,12 @@ import(
 	"net/http"
 	"net/url"
 )
+
+func main() {
+	Get()
+	GetQuery()
+	Head()
+}
 
 // $ curl http://localhost:18888
 func Get() {

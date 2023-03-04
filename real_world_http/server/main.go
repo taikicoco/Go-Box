@@ -1,4 +1,4 @@
-package real_world_http
+package main
 
 import (
 	"fmt"
