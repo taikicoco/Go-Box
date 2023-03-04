@@ -1,4 +1,4 @@
-package main
+package real_world_http
 
 import (
 	"fmt"
@@ -26,20 +26,23 @@ http.Server
 	}
 */
 
-func hander(w http.ResponseWriter, r *http.Request) {
+func handler(w http.ResponseWriter, r *http.Request) {
 	dump, err := httputil.DumpRequest(r, true)
 	if err != nil {
 		http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
 		return
 	}
 	fmt.Println(string(dump))
-	fmt.Fprintf(w, "<html><body>hello</body></html>\n")
+	fmt.Fprintf(w, "<html><body>hello go</body></html>\n")
 }
 
 func main() {
-	var httpServer http.Server
-	http.HandleFunc("/", hander)
+	httpServer := &http.Server{
+		Addr:    ":18888",
+	}
+	http.HandleFunc("/", handler)
 	log.Println("start http listening :18888")
-	httpServer.Addr = ":18888"
-	log.Println(httpServer.ListenAndServe())
+	if err := httpServer.ListenAndServe(); err != nil {
+		log.Fatal(err)
+	}
 }
