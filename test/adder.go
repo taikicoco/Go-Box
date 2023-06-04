@@ -1,5 +1,5 @@
-package adder
+package test
 
-func addNumbers(x, y int) int { //liststart
-	return x + x
+func addNumbers(x, y int) int {
+	return x + y
 } 
