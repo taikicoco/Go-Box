@@ -9,11 +9,6 @@ func main() {
 	useIota()
 	useConditionalBranching()
 	useArraySlice()
-
-	dog := &Dog{}
-	cat := &Cat{}
-	DoSpeak(dog)
-	DoSpeak(cat)
 }
 
 // 変数の宣言と代入
@@ -124,26 +119,5 @@ func useArraySlice() {
 	fmt.Println(d)
 	d = append(d, 6)
 	fmt.Println(d)
-}
-
-
-// interface
-type Speaker interface {
-	Speak() error
-}
-
-type Dog struct {}
-func (d *Dog) Speak() error {
-	fmt.Println("Bow Wow")
-	return nil
-}
-
-type Cat struct {}
-func (c *Cat) Speak() error {
-	fmt.Println("Meow")
-	return nil
-}
-func DoSpeak(speaker Speaker) error {
-	return speaker.Speak()
 }
 
