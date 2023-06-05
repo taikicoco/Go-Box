@@ -3,12 +3,16 @@ package main
 import (
 	"fmt"
 	"math"
+	"io"
+	"strings"
 )
 
 func main() {
 	main1()
 	main2()
 	main3()
+	main4()
+	main5()
 }
 
 
@@ -114,3 +118,39 @@ func (f MyFloat) Abs() float64 {
 func (v *Vertex) Abs() float64 {
 	return math.Sqrt(v.X*v.X + v.Y*v.Y)
 }	
+
+
+func main4() {
+	a := &Person{"Arthur Dent", 42}
+	z := Person{"Zaphod Beeblebrox", 9001}
+	fmt.Println(a, "a")
+	fmt.Println(z, "z")
+	
+}
+
+type Person struct {
+	Name string
+	Age int
+}
+
+func (p *Person) String() string {
+	return fmt.Sprintf("%v (%v years)", p.Name, p.Age)
+}
+
+
+func main5() {
+	r := strings.NewReader("Hello, Reader!")
+	// func NewReader(s string) *Reader { return &Reader{s, 0, -1} }
+	fmt.Println(r, "r") // &{Hello, Reader! 0 -1} r
+	b := make([]byte, 8)
+	for {
+		n, err := r.Read(b)
+		fmt.Printf("n = %v, err = %v, b = %v\n", n, err, b)
+		fmt.Printf("b[:n] = %q\n", b[:n])
+		if err == io.EOF {
+			break
+		}
+	}
+}
+
+
