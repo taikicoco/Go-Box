@@ -1,10 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 func main() {
 	main1()
 	main2()
+	main3()
 }
 
 
@@ -73,3 +77,40 @@ func (c *Cat) Speak() error {
 func DoSpeak(speaker Speaker) error {
 	return speaker.Speak()
 }
+
+func main3() {
+	var a Abser
+	f := MyFloat(-math.Sqrt2)
+	v := Vertex{3,4}
+
+	a = f
+	a = &v
+
+	// a = v
+	fmt.Println(f.Abs(), "f.Abs()")
+	fmt.Println(v.Abs(), "v.Abs()")
+
+	fmt.Println(a.Abs(), "a.Abs(), a = &v")
+}
+
+type Abser interface {
+	Abs() float64
+}
+
+type MyFloat float64
+
+type Vertex struct {
+	X, Y float64
+}
+
+func (f MyFloat) Abs() float64 {
+	if f < 0 {
+		return float64(-f)
+	}else {
+		return float64(f)
+	}
+}
+
+func (v *Vertex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}	
