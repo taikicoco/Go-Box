@@ -4,70 +4,50 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
+type Person struct {
+	Name  string `json:"name"`
+	Age   int    `json:"age"`
+	Email string `json:"email"`
+}
+
 func main() {
-	go_marshal()
-	go_new_encoder()
-	go_file_open()
-}
-
-type go_sample_stract []struct {
-	ID int `json:"id"`
-	Answer string `json:"answer"`
-}
-
-func go_file_open() {
-
-	f, err := os.Open("sample.json")
-	if err != nil {
-		panic(err)
-	}
-	content, err := ioutil.ReadAll(f)
-	if err != nil {
-		panic(err.Error())
-	}
-	defer f.Close()
-
-	var data go_sample_stract
-
-	err = json.Unmarshal(content, &data)
+	// jsonファイルを読み込む
+	data, err := ioutil.ReadFile("data.json")
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(data)
-}
+	// Goの構造体にデコード
+	var persons []Person
+	if err := json.Unmarshal(data, &persons); err != nil {
+		panic(err)
+	}
 
-type GoStruct struct {
-	A int
-	B string
-}
+	for i, person := range persons {
+		if person.Name == "Taro" {
+			persons[i].Age = 100
+		}
+	}
 
-func go_marshal() {
-	
-	stcData := GoStruct{A: 1, B: "bbb"}
-
-	// Marshal関数でjsonエンコード
-	// ->返り値jsonDataにはエンコード結果が[]byteの形で格納される
-	jsonData, err := json.Marshal(stcData)
+	// Goの構造体をjsonにエンコード
+	jsonData, err := json.Marshal(persons)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Printf("%s\n", jsonData)
-	fmt.Println(stcData)
-}
-
-func go_new_encoder() {
-	stcData := GoStruct{A: 1, B: "bbb"}
-
-	// 標準出力にjsonエンコード結果を出す
-	err := json.NewEncoder(os.Stdout).Encode(stcData)
+	file, err := os.Create("data.json")
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	_, err = file.Write(jsonData)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
-
